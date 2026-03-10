@@ -34,12 +34,12 @@ function WorkoutForm({ addWorkout, exercises }) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3 mb-4">
 
+      {/* Exercise dropdown */}
       <select
-        value={exercise}
         onChange={(e) => setExercise(e.target.value)}
         className="border p-2 rounded"
       >
-        <option value="">Select Exercise</option>
+        <option value="">Select exercise (optional)</option>
 
         {exercises?.map((ex) => (
           <option key={ex.id} value={ex.name}>
@@ -47,6 +47,15 @@ function WorkoutForm({ addWorkout, exercises }) {
           </option>
         ))}
       </select>
+
+      {/* Manual exercise input */}
+      <input
+        type="text"
+        placeholder="Or type exercise manually"
+        value={exercise}
+        onChange={(e) => setExercise(e.target.value)}
+        className="border p-2 rounded"
+      />
 
       <input
         type="number"

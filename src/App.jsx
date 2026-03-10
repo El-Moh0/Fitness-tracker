@@ -8,54 +8,90 @@ import { fetchExercises } from "./api/exercises";
 function App() {
   const [workouts, setWorkouts] = useState([]);
   const [exercises, setExercises] = useState([]);
+  const [loadingExercises, setLoadingExercises] = useState(true);
 
   // Load workouts from LocalStorage
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("workouts")) || [];
-    setWorkouts(saved);
+    const savedWorkouts =
+      JSON.parse(localStorage.getItem("workouts")) || [];
+    setWorkouts(savedWorkouts);
   }, []);
 
-  // Fetch exercises from API
+  // Fetch exercises from WGER API
   useEffect(() => {
     const loadExercises = async () => {
-      const data = await fetchExercises();
-      setExercises(data);
+      try {
+        const data = await fetchExercises();
+        setExercises(data);
+      } catch (error) {
+        console.error("Failed to load exercises:", error);
+      } finally {
+        setLoadingExercises(false);
+      }
     };
 
     loadExercises();
   }, []);
 
+  // Add workout
   const addWorkout = (workout) => {
     const updatedWorkouts = [...workouts, workout];
     setWorkouts(updatedWorkouts);
-    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
+
+    localStorage.setItem(
+      "workouts",
+      JSON.stringify(updatedWorkouts)
+    );
   };
 
+  // Delete workout
   const deleteWorkout = (id) => {
-    const updatedWorkouts = workouts.filter((w) => w.id !== id);
+    const updatedWorkouts = workouts.filter(
+      (workout) => workout.id !== id
+    );
+
     setWorkouts(updatedWorkouts);
-    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
+
+    localStorage.setItem(
+      "workouts",
+      JSON.stringify(updatedWorkouts)
+    );
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
+    <div className="min-h-screen flex flex-col bg-gray-100">
 
-      <h1 className="text-4xl font-bold text-blue-600 mb-6">
-        Fitness Tracker
-      </h1>
+      {/* Main content */}
+      <div className="flex-grow p-6 flex flex-col items-center">
 
-      <Stats workouts={workouts} />
+        <h1 className="text-4xl font-bold text-blue-600 mb-6">
+          Fitness Tracker
+        </h1>
 
-      <div className="bg-white p-6 rounded shadow w-full max-w-xl">
-        <WorkoutForm
-          addWorkout={addWorkout}
-          exercises={exercises}
-        />
+        {/* Stats */}
+        <Stats workouts={workouts} />
 
-        <WorkoutList
-          workouts={workouts}
-          deleteWorkout={deleteWorkout}
-        />
+        {/* Workout Form + List */}
+        <div className="bg-white p-6 rounded shadow w-full max-w-xl">
+
+          {loadingExercises ? (
+            <p className="text-gray-500 mb-3">
+              Loading exercises...
+            </p>
+          ) : null}
+
+          <WorkoutForm
+            addWorkout={addWorkout}
+            exercises={exercises}
+          />
+
+          <WorkoutList
+            workouts={workouts}
+            deleteWorkout={deleteWorkout}
+          />
+
+        </div>
+
       </div>
 
       {/* Footer */}
