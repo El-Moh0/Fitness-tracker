@@ -10,7 +10,7 @@ function WorkoutForm({ addWorkout, exercises }) {
     e.preventDefault();
 
     if (!exercise || !sets || !reps || !weight) {
-      alert("Please fill in all fields");
+      alert("Please fill all fields");
       return;
     }
 

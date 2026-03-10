@@ -14,7 +14,7 @@ function App() {
     setWorkouts(saved);
   }, []);
 
-  // Fetch exercises from API
+  // Fetch exercises
   useEffect(() => {
     const loadExercises = async () => {
       const data = await fetchExercises();
@@ -45,7 +45,10 @@ function App() {
       <Stats workouts={workouts} />
 
       <div className="bg-white p-6 rounded shadow w-full max-w-xl">
-        <WorkoutForm addWorkout={addWorkout} exercises={exercises} />
+        <WorkoutForm
+          addWorkout={addWorkout}
+          exercises={exercises}
+        />
 
         <WorkoutList
           workouts={workouts}

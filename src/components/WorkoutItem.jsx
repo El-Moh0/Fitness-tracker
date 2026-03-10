@@ -1,4 +1,5 @@
 function WorkoutItem({ workout, deleteWorkout }) {
+
   return (
     <div className="flex justify-between items-center border p-3 rounded">
 
@@ -6,7 +7,7 @@ function WorkoutItem({ workout, deleteWorkout }) {
         <h3 className="font-bold">{workout.exercise}</h3>
 
         <p>
-          {workout.sets} sets × {workout.reps} reps | {workout.weight}kg
+          {workout.sets} sets × {workout.reps} reps | {workout.weight} kg
         </p>
 
         <p className="text-sm text-gray-500">{workout.date}</p>

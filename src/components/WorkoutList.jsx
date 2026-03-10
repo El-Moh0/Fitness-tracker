@@ -1,6 +1,7 @@
 import WorkoutItem from "./WorkoutItem";
 
 function WorkoutList({ workouts, deleteWorkout }) {
+
   if (!workouts.length) {
     return <p className="text-gray-500">No workouts yet.</p>;
   }
