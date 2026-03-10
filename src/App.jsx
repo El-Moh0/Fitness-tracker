@@ -2,13 +2,26 @@ import { useState, useEffect } from "react";
 import WorkoutForm from "./components/WorkoutForm";
 import WorkoutList from "./components/WorkoutList";
 import Stats from "./components/Stats";
+import { fetchExercises } from "./api/exercises";
 
 function App() {
   const [workouts, setWorkouts] = useState([]);
+  const [exercises, setExercises] = useState([]);
 
+  // Load saved workouts
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("workouts")) || [];
     setWorkouts(saved);
+  }, []);
+
+  // Fetch exercises from API
+  useEffect(() => {
+    const loadExercises = async () => {
+      const data = await fetchExercises();
+      setExercises(data);
+    };
+
+    loadExercises();
   }, []);
 
   const addWorkout = (workout) => {
@@ -32,8 +45,12 @@ function App() {
       <Stats workouts={workouts} />
 
       <div className="bg-white p-6 rounded shadow w-full max-w-xl">
-        <WorkoutForm addWorkout={addWorkout} />
-        <WorkoutList workouts={workouts} deleteWorkout={deleteWorkout} />
+        <WorkoutForm addWorkout={addWorkout} exercises={exercises} />
+
+        <WorkoutList
+          workouts={workouts}
+          deleteWorkout={deleteWorkout}
+        />
       </div>
     </div>
   );
