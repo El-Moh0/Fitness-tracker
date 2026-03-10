@@ -6,25 +6,21 @@ import Stats from "./components/Stats";
 function App() {
   const [workouts, setWorkouts] = useState([]);
 
-  // Load workouts from LocalStorage when app starts
   useEffect(() => {
-    const storedWorkouts = JSON.parse(localStorage.getItem("workouts")) || [];
-    setWorkouts(storedWorkouts);
+    const saved = JSON.parse(localStorage.getItem("workouts")) || [];
+    setWorkouts(saved);
   }, []);
 
-  // Save workouts to LocalStorage whenever workouts change
-  useEffect(() => {
-    localStorage.setItem("workouts", JSON.stringify(workouts));
-  }, [workouts]);
-
-  // Add workout
   const addWorkout = (workout) => {
-    setWorkouts([...workouts, workout]);
+    const updatedWorkouts = [...workouts, workout];
+    setWorkouts(updatedWorkouts);
+    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
   };
 
-  // Delete workout
   const deleteWorkout = (id) => {
-    setWorkouts(workouts.filter((workout) => workout.id !== id));
+    const updatedWorkouts = workouts.filter((w) => w.id !== id);
+    setWorkouts(updatedWorkouts);
+    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
   };
 
   return (
@@ -33,17 +29,11 @@ function App() {
         Fitness Tracker
       </h1>
 
-      {/* Stats */}
       <Stats workouts={workouts} />
 
-      {/* Card container */}
-      <div className="w-full max-w-xl bg-white p-6 rounded-lg shadow-md">
+      <div className="bg-white p-6 rounded shadow w-full max-w-xl">
         <WorkoutForm addWorkout={addWorkout} />
-
-        <WorkoutList
-          workouts={workouts}
-          deleteWorkout={deleteWorkout}
-        />
+        <WorkoutList workouts={workouts} deleteWorkout={deleteWorkout} />
       </div>
     </div>
   );

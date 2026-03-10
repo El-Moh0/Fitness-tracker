@@ -9,16 +9,16 @@ function WorkoutForm({ addWorkout }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!exercise || !sets || !reps || !weight) return;
-
-    addWorkout({
+    const workout = {
       id: Date.now(),
       exercise,
       sets: Number(sets),
       reps: Number(reps),
       weight: Number(weight),
       date: new Date().toLocaleDateString(),
-    });
+    };
+
+    addWorkout(workout);
 
     setExercise("");
     setSets("");
@@ -27,7 +27,7 @@ function WorkoutForm({ addWorkout }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2 mb-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3 mb-4">
       <input
         placeholder="Exercise"
         value={exercise}
@@ -53,13 +53,13 @@ function WorkoutForm({ addWorkout }) {
 
       <input
         type="number"
-        placeholder="Weight (kg)"
+        placeholder="Weight"
         value={weight}
         onChange={(e) => setWeight(e.target.value)}
         className="border p-2 rounded"
       />
 
-      <button className="bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+      <button className="bg-blue-500 text-white p-2 rounded">
         Add Workout
       </button>
     </form>
