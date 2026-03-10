@@ -2,19 +2,20 @@ import { useState, useEffect } from "react";
 import WorkoutForm from "./components/WorkoutForm";
 import WorkoutList from "./components/WorkoutList";
 import Stats from "./components/Stats";
+import Footer from "./components/Footer";
 import { fetchExercises } from "./api/exercises";
 
 function App() {
   const [workouts, setWorkouts] = useState([]);
   const [exercises, setExercises] = useState([]);
 
-  // Load saved workouts
+  // Load workouts from LocalStorage
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("workouts")) || [];
     setWorkouts(saved);
   }, []);
 
-  // Fetch exercises
+  // Fetch exercises from API
   useEffect(() => {
     const loadExercises = async () => {
       const data = await fetchExercises();
@@ -38,6 +39,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
+
       <h1 className="text-4xl font-bold text-blue-600 mb-6">
         Fitness Tracker
       </h1>
@@ -55,6 +57,10 @@ function App() {
           deleteWorkout={deleteWorkout}
         />
       </div>
+
+      {/* Footer */}
+      <Footer />
+
     </div>
   );
 }
